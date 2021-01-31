@@ -26,21 +26,26 @@ input.setAttribute("autofocus", "")
 // create an array to save the input values
 allTodo = []
 
+
 // function for appending list upon hitting enter after entering text
 function createListElement(event) {
+    if (input.value === "") {
+        return
+    }
     let randomNumber = Math.floor(Math.random()*90000) + 10000
     let li = document.createElement("li")
     li.classList.add("listStyling")
     li.setAttribute("id", randomNumber)
     let radioButton = document.createElement("input")  // create radio button 
     radioButton.setAttribute("type", "radio")
+    radioButton.classList.add("radioButton")
     let closeButton = document.createElement("span")  // create close buttom in list
     closeButton.textContent = "x"
     closeButton.classList.add("closeButton")
     if (event.keyCode === 13) {
         let obj = {
             text: input.value,
-            isComplicated: false,
+            isCompleted: false,
             id: randomNumber
         }
         allTodo.push(obj)
@@ -50,19 +55,28 @@ function createListElement(event) {
         ul.appendChild(li)
         li.appendChild(radioButton)
         li.appendChild(closeButton)
-        // input.value = ""               
+        input.value = ""               
     }
 }
 
 function deleteListElement(event) {
+        // console.dir(event)
         let li = document.createElement("li")
         li.classList.add("listStyling") 
         let radioButton = document.createElement("input")  // create radio button 
         radioButton.setAttribute("type", "radio")
+        radioButton.classList.add("radioButton")
+        if (event.target.nodeName !== "SPAN") {
+            return
+        }
+        
+
+
+
         let closeButton = document.createElement("span")  // create close buttom in list
         closeButton.textContent = "x"
         closeButton.classList.add("closeButton")
-    // console.log(event)
+    // console.log(event)listStyling
         allTodo = allTodo.filter(function(element, index){
         if (element.id !== Number(event.target.parentNode.id)) {
             return true;
@@ -72,28 +86,17 @@ function deleteListElement(event) {
 
         console.log(allTodo)
 
-        // for (let i = 0; i < allTodo.length; i++) {
-        //     li.textContent = allTodo[i].text
-        //     li.setAttribute("id", allTodo[i].id)
-        //     console.log(li)
-        //     li.appendChild(radioButton)
-        //     li.appendChild(closeButton)
-        //     ul.appendChild(li)
-        // }
-
         allTodo.forEach((element, index) => {
           return document.querySelector("ul").innerHTML += `
             <li class="listStyling" id="${element.id}"">${element.text}
-              <input type="radio">
+              <input type="radio" class="radioButton">
               <span class="closeButton">x</span>
             </li>
           `
         })
-
-            
-
 }
 
 input.addEventListener("keypress", createListElement)
 
 ul.addEventListener("click", deleteListElement)
+

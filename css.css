@@ -68,15 +68,15 @@ h1{
     width: 45%;
     margin: 0 auto;
     background-color: white;
+    box-shadow: 2px 3px 20px 8px rgb(0 0 0 / 3%);
 }
 .searchBox{
         width: 100%;
-        font-size: 17px;
+        font-size: 25px;
         color: inherit;
         border:none;
         caret-color: black;
         height: 45px;
-        /* box-shadow: inset 0 -2px 1px rgba(0,0,0,0.03); */
 }
 input:focus{
     outline: none;
@@ -84,7 +84,9 @@ input:focus{
 
 input::placeholder{
     font-weight: 100;
+    font-size: 20px;
     font-style: italic;
+    color: rgb(221, 212, 212);
 }
 .ulStyling{
     width: 45%;
@@ -98,6 +100,14 @@ input::placeholder{
     flex-direction: row-reverse;
     justify-content: flex-end;
     position: sticky;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #eeeaea;
+    box-shadow: 2px 3px 20px 8px rgb(0 0 0 / 3%);
+}
+.listStyling:hover .closeButton{
+    display: block;
+    color: red;
 }
 
 .closeButton{
@@ -105,4 +115,13 @@ input::placeholder{
     position: absolute;
     right: 10px;
     cursor: pointer;
+    right: 20px;
+    display: none;
+}
+
+
+.radioButton{
+    margin-right: 17px;
+    width: 25px; 
+    height: 25px; 
 }
