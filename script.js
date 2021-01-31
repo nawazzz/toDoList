@@ -83,7 +83,7 @@ function deleteListElement(event) {
 function displayTodos(arr) {
     arr.forEach((element, index) => {
         return document.querySelector("ul").innerHTML += `
-          <li class="listStyling" id="${element.id}"">${element.text}
+          <li class="listStyling ${element.isCompleted === true ? "checked" : ""}" id="${element.id}"">${element.text}
             <input type="checkbox" class="checkboxButton" ${element.isCompleted === true ? "checked" : null}>
             <span class="closeButton">x</span>
           </li>

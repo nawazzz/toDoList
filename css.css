@@ -125,3 +125,6 @@ input::placeholder{
     width: 25px; 
     height: 25px; 
 }
+.checked{
+    text-decoration: line-through;
+}
