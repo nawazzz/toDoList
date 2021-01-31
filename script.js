@@ -36,9 +36,9 @@ function createListElement(event) {
     let li = document.createElement("li")
     li.classList.add("listStyling")
     li.setAttribute("id", randomNumber)
-    let radioButton = document.createElement("input")  // create radio button 
-    radioButton.setAttribute("type", "radio")
-    radioButton.classList.add("radioButton")
+    let checkboxButton = document.createElement("input")  // create checkbox button 
+    checkboxButton.setAttribute("type", "checkbox")
+    checkboxButton.classList.add("checkboxButton")
     let closeButton = document.createElement("span")  // create close buttom in list
     closeButton.textContent = "x"
     closeButton.classList.add("closeButton")
@@ -53,50 +53,69 @@ function createListElement(event) {
             li.textContent = allTodo[i].text
         }
         ul.appendChild(li)
-        li.appendChild(radioButton)
+        li.appendChild(checkboxButton)
         li.appendChild(closeButton)
         input.value = ""               
     }
 }
 
 function deleteListElement(event) {
-        // console.dir(event)
-        let li = document.createElement("li")
-        li.classList.add("listStyling") 
-        let radioButton = document.createElement("input")  // create radio button 
-        radioButton.setAttribute("type", "radio")
-        radioButton.classList.add("radioButton")
-        if (event.target.nodeName !== "SPAN") {
-            return
-        }
-        
-
-
-
-        let closeButton = document.createElement("span")  // create close buttom in list
-        closeButton.textContent = "x"
-        closeButton.classList.add("closeButton")
-    // console.log(event)listStyling
-        allTodo = allTodo.filter(function(element, index){
-        if (element.id !== Number(event.target.parentNode.id)) {
-            return true;
-        }
-    })
-        document.querySelector("ul").textContent = "";
-
-        console.log(allTodo)
-
-        allTodo.forEach((element, index) => {
-          return document.querySelector("ul").innerHTML += `
-            <li class="listStyling" id="${element.id}"">${element.text}
-              <input type="radio" class="radioButton">
-              <span class="closeButton">x</span>
-            </li>
-          `
-        })
+        if (event.target.nodeName === "SPAN") {
+            let li = document.createElement("li")
+            li.classList.add("listStyling") 
+            let checkboxButton = document.createElement("input")  // create checkbox button 
+            checkboxButton.setAttribute("type", "checkbox")
+            checkboxButton.classList.add("checkboxButton")
+            
+            let closeButton = document.createElement("span")  // create close buttom in list
+            closeButton.textContent = "x"
+            closeButton.classList.add("closeButton")
+            allTodo = allTodo.filter(function(element, index){
+                if (element.id !== Number(event.target.parentNode.id)) {
+                    return true;
+                }
+            })
+            document.querySelector("ul").textContent = "";
+            displayTodos(allTodo)
+    }
 }
+
+function displayTodos(arr) {
+    arr.forEach((element, index) => {
+        return document.querySelector("ul").innerHTML += `
+          <li class="listStyling" id="${element.id}"">${element.text}
+            <input type="checkbox" class="checkboxButton" ${element.isCompleted === true ? "checked" : null}>
+            <span class="closeButton">x</span>
+          </li>
+        `
+      })
+}
+
+function toggleAsCompleted(event) {
+    if (event.target.nodeName === "INPUT" && event.target.type === "checkbox") {
+       let result = allTodo.map(function(element, index){
+            if (element.id === Number(event.target.parentNode.id)) {
+                // element.isCompleted = true
+                return {
+                    ...element,
+                    isCompleted: !element.isCompleted 
+                }
+            } else {
+                return element
+            }
+
+        })
+        allTodo = result
+        console.log(result)
+        document.querySelector("ul").textContent = "";
+        displayTodos(result)
+    }
+    
+}
+
 
 input.addEventListener("keypress", createListElement)
 
 ul.addEventListener("click", deleteListElement)
+document.addEventListener("click", toggleAsCompleted)
 
