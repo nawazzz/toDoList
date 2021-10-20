@@ -26,12 +26,19 @@ input.setAttribute("autofocus", "")
 // create an array to save the input values
 allTodo = []
 
+// localStorage.setItem('allTodo', JSON.stringify(allTodo));
+// let retrievedObject = localStorage.getItem('allTodo');
+// console.log('retrievedObject: ', JSON.parse(retrievedObject));
+
+
+
 
 // function for appending list upon hitting enter after entering text
 function createListElement(event) {
     if (input.value === "") {
         return
     }
+
     let randomNumber = Math.floor(Math.random()*90000) + 10000
     let li = document.createElement("li")
     li.classList.add("listStyling")
@@ -48,14 +55,22 @@ function createListElement(event) {
             isCompleted: false,
             id: randomNumber
         }
-        allTodo.push(obj)
-        for (let i = 0; i < allTodo.length; i++) {
-            li.textContent = allTodo[i].text
+        let newLocalArray = JSON.parse(localStorage.getItem("allTodo"))
+        if (newLocalArray) {
+            newLocalArray.push(obj)
+            localStorage.setItem('allTodo', JSON.stringify(newLocalArray));
+        } else {
+            localStorage.setItem('allTodo', JSON.stringify([obj]));
+            newLocalArray = JSON.parse(localStorage.getItem("allTodo"))
+        }
+        console.log("local")
+        for (let i = 0; i < newLocalArray.length; i++) {
+            li.textContent = newLocalArray[i].text
         }
         ul.appendChild(li)
         li.appendChild(checkboxButton)
         li.appendChild(closeButton)
-        input.value = ""               
+        input.value = "";            
     }
 }
 
@@ -79,21 +94,32 @@ function deleteListElement(event) {
             displayTodos(allTodo)
     }
 }
+window.onload = function() {
+    let retrievedArray = JSON.parse(localStorage.getItem('allTodo'));
+    if (retrievedArray) { 
+        displayTodos(retrievedArray)
+    }
+}
 
 function displayTodos(arr) {
     arr.forEach((element, index) => {
+        // let retrievedArray = localStorage.getItem('allTodo');
+        // console.log('retrievedArray: ', JSON.parse(retrievedArray));
         return document.querySelector("ul").innerHTML += `
           <li class="listStyling ${element.isCompleted === true ? "checked" : ""}" id="${element.id}"">${element.text}
             <input type="checkbox" class="checkboxButton" ${element.isCompleted === true ? "checked" : null}>
             <span class="closeButton">x</span>
           </li>
         `
-      })
+    })
 }
 
 function toggleAsCompleted(event) {
+    
+    let newLocalArray = JSON.parse(localStorage.getItem("allTodo"))
+    
     if (event.target.nodeName === "INPUT" && event.target.type === "checkbox") {
-       let result = allTodo.map(function(element, index){
+       let result = newLocalArray.map(function(element, index){
             if (element.id === Number(event.target.parentNode.id)) {
                 // element.isCompleted = true
                 return {
